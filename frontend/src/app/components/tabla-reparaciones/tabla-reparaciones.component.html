@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <!--Etiqueta h que muestra el num de reparaciones por hacer-->
+  <h5 class="m-5" style="text-align: center;">En total hay {{numReparacionesActivas}} reparaciones por hacer</h5>
+
+  <!--Barra de búsqueda-->
+  <div class="row" *ngIf="listReparaciones.length > 0">
+    <div class="col">
+      <form>
+        <div class="form-group form-inline">
+          <input class="form-control d-flex justify-content-center" type="text" name="filtroReparaciones"
+            placeholder="Buscar..." [(ngModel)]="filtroReparaciones" />
+        </div>
+      </form>
+    </div>
+    <!--Botones para imprimir y exportar la tabla a documento PDF-->
+    <div class="col text-right">
+      <button type="button" class="btn btn-outline-primary mr-2" [useExistingCss]="true" printSectionId="demo" ngxPrint><i class="fas fa-print"></i></button>
+      <button type="button" class="btn btn-outline-danger" (click)="imprimirTabla()"><i class="far fa-file-pdf"></i></button>
+    </div>
+  </div>
+
+  <!--Tabla de reparaciones-->
+  <!--Falta hacerla responsive-->
+  <div id="demo" class="row">
+    <div class="col">
+
+      <table id="tabla-reparaciones" class="table table-striped table-responsive" *ngIf="listReparaciones.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Id de reparación</th>
+            <th scope="col">Tipo de reparación</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Nº de serie del dispositivo</th>
+            <th scope="col">Fecha de entrada</th>
+            <th scope="col">Fallo del dispositivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--<-- *ngFor="let reparacion of listReparaciones | filtro:filtroReparaciones | slice: (page-1) * pageSize : page * pageSize">-->
+          <tr *ngFor="let reparacion of listReparaciones | filtro:filtroReparaciones | slice: (page-1) * pageSize : page * pageSize">
+            <td scope="row">{{reparacion.id_reparacion}}</td>
+            <td>{{reparacion.tipo}}</td>
+            <td>{{reparacion.modelo}}</td>
+            <td>{{reparacion.numero_serie}}</td>
+            <td>{{reparacion.fecha_entrada | date: 'dd/MM/yyyy'}}</td>
+            <td>{{reparacion.descripcion}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!--Paginación de la tabla-->
+  <div class="row">
+    <div class="col">
+      <ngb-pagination *ngIf="listReparaciones.length > 0" class="d-flex justify-content-center" [(page)]="page" [pageSize]="pageSize"
+        [collectionSize]="listReparaciones.length" [boundaryLinks]="true"></ngb-pagination>
+    </div>
+  </div>
+</div>

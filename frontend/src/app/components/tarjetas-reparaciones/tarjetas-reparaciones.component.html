@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <!--Etiqueta h que muestra el num de reparaciones por hacer-->
+  <h5 class="m-5" style="text-align: center;">En total hay {{numReparacionesActivas}} reparaciones por hacer</h5>
+
+  <!--Barra de búsqueda-->
+  <div class="row" *ngIf="listReparacionesActivas.length > 0">
+    <div class="col">
+      <form>
+        <div class="form-group form-inline">
+          <input class="form-control ml-2" type="text" name="filtroReparaciones" placeholder="Buscar..." [(ngModel)]="filtroReparaciones"/>
+        </div>
+      </form>
+    </div>
+    <!--div class="col">
+      <form>
+        <div class="form-group form-inline float-right mr-2">
+          <input class="form-control" placeholder="dd/mm/yyyy"
+          name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary far fa-calendar-alt m-1" style="border-radius: 0px;" (click)="d.toggle()" type="button"></button>
+          </div>
+        </div>
+      </form>
+    </div>-->
+  </div>
+
+
+  <!--Tarjetas-->
+    <div class="row">
+        <div class="col-md-6" *ngFor="let reparacion of listReparacionesActivas | filtro:filtroReparaciones | slice: (page-1) * pageSize : page * pageSize">
+            <div class="card" style="border-color:#AEB6BF; border-radius: 0px;">
+              <div class="card-header text-center">
+                <h6>Reparación de {{reparacion.tipo | lowercase}} con Id: {{reparacion.id_reparacion}}</h6><hr>
+                <img class="card-img-bottom" style=" width: 60px; height: 60px;" src='{{ "assets/icons/" + reparacion.tipo + ".png" }}' alt="Card image cap">
+              </div>
+              <div class="card-body" >
+                <p class="card-text">Descripción del fallo: {{reparacion.descripcion | lowercase}}</p><hr>
+                <p class="card-text">Modelo del dispositivo: {{reparacion.modelo | lowercase}}</p><hr>
+                <p class="card-text">Nº de serie del dispositivo: {{reparacion.numero_serie}}</p><hr>
+              </div>
+              <div class="card-body text-center">
+                <div ngbDropdown class="d-inline-block">
+                  <button class="btn btn-outline-primary m-1" style="border: none; border-radius: 0px;" id="dropdownBasic1" ngbDropdownToggle><i class="fas fa-check mr-2"></i>Finalizar</button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem (click)="finalizarReparacionExitosa(reparacion.id_reparacion)">Finalizada con éxito <i class="far fa-smile-beam mr-2"></i></button>
+                    <button ngbDropdownItem (click)="finalizarReparacionNoExitosa(reparacion.id_reparacion)">Finalizada sin éxito <i class="far fa-frown mr-2"></i></button>
+                  </div>
+                </div>
+                <ng-template #popContent>Nombre: {{reparacion.nombre_cliente}} <br>Apellidos: {{reparacion.apellidos_cliente}} <br>Teléfono: {{reparacion.telefono_cliente}}</ng-template>
+                <button class="btn btn-outline-info m-1" style="border: none; border-radius: 0px;" placement="right" [ngbPopover]="popContent"><i class="far fa-user mr-2"></i>Datos del cliente</button>
+                <button [routerLink]="['/form-editar-reparacion', reparacion.id_reparacion]" class="btn btn-outline-warning m-1" style="border: none; border-radius: 0px;" placement="top" ngbTooltip="Editar reparación"><i class="far fa-edit"></i></button>
+                <button class="btn btn-outline-danger m-1" style="border: none; border-radius: 0px;" placement="top" ngbTooltip="Eliminar reparación" (click)="deleteReparacion(reparacion.id_reparacion)"><i class="far fa-trash-alt"></i></button>
+              </div>
+              <div class="card-footer text-muted text-center">
+                Fecha de entrada: {{reparacion.fecha_entrada | date: 'dd/MM/yyyy'}}
+              </div>
+            </div>
+            <!--Solucionar margin-top-->
+            <br>
+        </div>
+    </div>
+
+  <!--Paginación de las tarjetas-->
+  <ngb-pagination
+  *ngIf="listReparacionesActivas.length > 0"
+  class="pagination d-flex justify-content-center"
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="numReparacionesActivas" [boundaryLinks]="true"></ngb-pagination>
+
+</div>
+
+
+
+

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "gestor-de-reparaciones": {
+      "hosting": {
+        "frontend": [
+          "gestor-de-reparaciones"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+CREATE DATABASE servicio_tecnico_db;
+
+USE servicio_tecnico_db;
+
+CREATE TABLE reparacion(
+    id_reparacion INT NOT NULL AUTO_INCREMENT COMMENT 'Identificador de la reparación',
+    tipo VARCHAR(50) COMMENT 'Tipo de reparación',
+    modelo VARCHAR(100) COMMENT 'Modelo del dispositivo',
+    numero_serie VARCHAR(100) COMMENT 'Numero de serie del dipositivo',
+    fecha_entrada TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha de entrada',
+    descripcion VARCHAR(255) COMMENT 'Descripción del fallo del dispositivo',
+    reparacion_finalizada BOOLEAN COMMENT 'Boolean que indica si la reparación ha finalizado',
+    reparacion_exitosa BOOLEAN COMMENT 'Boolean que indica si la reparación ha finalizado con o sin éxito',
+    nombre_cliente VARCHAR(50) COMMENT 'Nombre del cliente',
+    apellidos_cliente VARCHAR(100) COMMENT 'Apellidos del cliente',
+    telefono_cliente INT(20) COMMENT 'Telefono del cliente',
+    CONSTRAINT pk_id_reparacion PRIMARY KEY(id_reparacion)
+);
